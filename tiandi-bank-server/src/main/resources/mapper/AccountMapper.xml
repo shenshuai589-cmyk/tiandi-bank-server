@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace必须是Mapper或dao接口的全限定包名-->
+
+<mapper namespace="com.kris.tiandi.bank.mapper.AccountMapper">
+    <!--id必须是Mapper或dao接口内的方法名-->
+    <!--resultType必须是pojo类名-->
+
+    <select id="selectByUserId" resultType="com.kris.tiandi.bank.pojo.BankAccount">
+        select
+            id,
+            user_id AS userId,
+            account_no AS accountNo,
+            balance,
+            status,
+            create_time AS createTime
+        from bank_account
+        where user_id = #{userId}
+    </select>
+
+    <insert id="insert" parameterType="com.kris.tiandi.bank.pojo.BankAccount" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_account(
+            user_id,
+            account_no,
+            balance,
+            status
+        )values (
+                            #{userId},
+                            #{accountNo},
+                            #{balance},
+                            #{status}
+                        )
+    </insert>
+
+    <update id="updateBalance">
+        UPDATE bank_account
+        SET balance = balance + #{amount}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="withdrawBalance">
+        UPDATE bank_account
+        SET balance = balance - #{amount}
+        WHERE user_id = #{userId}
+          And balance >=  #{amount}
+    </update>
+</mapper>

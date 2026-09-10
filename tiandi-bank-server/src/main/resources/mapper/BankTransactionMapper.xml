@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace必须是Mapper或dao接口的全限定包名-->
+
+<mapper namespace="com.kris.tiandi.bank.mapper.BankTransactionMapper">
+    <!--id必须是Mapper或dao接口内的方法名-->
+    <!--resultType必须是pojo类名-->
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.kris.tiandi.bank.pojo.BankTransaction" keyProperty="id">
+        insert into bank_transaction(
+            user_id,
+            account_id,
+            type,
+            amount,
+            before_balance,
+            after_balance,
+            target_account_no,
+            remark
+        )values (
+                            #{userId},
+                            #{accountId},
+                            #{type},
+                            #{amount},
+                            #{beforeBalance},
+                            #{afterBalance},
+                            #{targetAccountNo},
+                            #{remark}
+                        )
+    </insert>
+
+    <select id="selectByUserId" resultType="com.kris.tiandi.bank.pojo.BankTransaction">
+        SELECT
+            id,
+            user_id as userId,
+            account_id as accountId,
+            type,
+            amount,
+            before_balance as beforeBalance,
+            after_balance as afterBalance,
+            target_account_no as targetAccountNo,
+            remark,
+            create_time as createTime
+        FROM bank_transaction
+        WHERE user_id = #{userId}
+        ORDER BY create_time DESC
+    </select>
+</mapper>

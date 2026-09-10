@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace必须是Mapper或dao接口的全限定包名-->
+
+<mapper namespace="com.kris.tiandi.bank.mapper.UserMapper">
+    <!--id必须是Mapper或dao接口内的方法名-->
+    <!--resultType必须是pojo类名-->
+
+    <select id="selectByUsername" resultType="com.kris.tiandi.bank.pojo.User">
+        select
+            id,
+            username,
+            password,
+            real_name AS realName,
+            phone,
+            role,
+            status,
+            create_time AS createTime
+        from sys_user
+        where username = #{username}
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user(
+            username,
+            password,
+            real_name,
+            phone,
+            role,
+            status
+        )values (
+                            #{username},
+                            #{password},
+                            #{realName},
+                            #{phone},
+                            #{role},
+                            #{status}
+                        )
+    </insert>
+</mapper>
