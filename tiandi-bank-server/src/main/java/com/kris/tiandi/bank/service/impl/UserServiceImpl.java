@@ -6,6 +6,7 @@ import com.kris.tiandi.bank.mapper.UserMapper;
 import com.kris.tiandi.bank.service.UserService;
 
 import com.kris.tiandi.bank.pojo.User;
+import com.kris.tiandi.bank.utils.JwtUtil;
 import com.kris.tiandi.bank.vo.LoginVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private  UserMapper  userMapper;
 
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Override
     public void register(RegisterDTO registerDTO) {
@@ -30,7 +33,7 @@ public class UserServiceImpl implements UserService {
         }
 
         //用户名不存在，创建用户
-        User user = new com.kris.tiandi.bank.pojo.User();
+        User user = new User();
         user.setUsername(registerDTO.getUsername());
         user.setPassword(registerDTO.getPassword());
         user.setRealName(registerDTO.getRealName());
@@ -68,7 +71,11 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("账号已被禁用");
         }
 
-        return new LoginVO(user.getId(), user.getUsername(), user.getRealName());
+        return new LoginVO(
+                user.getId(),
+                user.getUsername(),
+                user.getRealName(),
+                jwtUtil.generateToken(user.getId()));
     }
 
     @Override

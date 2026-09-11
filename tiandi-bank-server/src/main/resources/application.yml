@@ -19,3 +19,7 @@ logging:
   level:
     com.kris.tiandi.bank.mapper: debug
 
+
+jwt:
+  secret: tiandi-bank-jwt-secret-key-2026-very-safe
+  expire-time: 86400000

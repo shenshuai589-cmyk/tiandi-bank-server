@@ -14,4 +14,10 @@ public class LoginVO {
     private String username;
 
     private String realName;
+
+    /**
+     * JWT Token
+     */
+
+    private String token;
 }
