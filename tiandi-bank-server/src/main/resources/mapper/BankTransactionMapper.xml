@@ -46,4 +46,20 @@
         WHERE user_id = #{userId}
         ORDER BY create_time DESC
     </select>
+
+    <select id="selectAll" resultType="com.kris.tiandi.bank.pojo.BankTransaction">
+        select
+            id,
+            user_id AS userId,
+            account_id AS accountId,
+            type,
+            amount,
+            before_balance AS beforeBalance,
+            after_balance AS afterBalance,
+            target_account_no AS targetAccountNo,
+            remark,
+            create_time AS createTime
+        from bank_transaction
+        order by createTime desc
+    </select>
 </mapper>

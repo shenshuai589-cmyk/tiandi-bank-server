@@ -1,5 +1,6 @@
 package com.kris.tiandi.bank.controller;
 
+import com.kris.tiandi.bank.common.Result;
 import com.kris.tiandi.bank.dto.LoginDTO;
 import com.kris.tiandi.bank.dto.RegisterDTO;
 import com.kris.tiandi.bank.pojo.User;
@@ -20,15 +21,15 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public String register(@Valid @RequestBody RegisterDTO registerDTO) {
+    public Result<String> register(@Valid @RequestBody RegisterDTO registerDTO) {
         userService.register(registerDTO);
 
-        return "注册成功";
+        return Result.success();
     }
 
     @PostMapping("/login")
-    public LoginVO login(@Valid @RequestBody LoginDTO loginDTO) {
+    public Result<LoginVO> login(@Valid @RequestBody LoginDTO loginDTO) {
 
-        return userService.login(loginDTO);
+        return Result.success(userService.login(loginDTO));
     }
 }

@@ -10,6 +10,8 @@ import com.kris.tiandi.bank.vo.LoginVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -67,5 +69,50 @@ public class UserServiceImpl implements UserService {
         }
 
         return new LoginVO(user.getId(), user.getUsername(), user.getRealName());
+    }
+
+    @Override
+    public List<User> listAll() {
+
+        return userMapper.selectAll();
+    }
+
+    //冻结账户
+    @Override
+    public void freezeUser(Long userId) {
+        User user = userMapper.selectById(userId);
+
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
+
+        if (user.getStatus() == 0) {
+            throw new RuntimeException("用户已经被冻结");
+        }
+
+        int rows = userMapper.updateStatus(userId, 0);
+
+        if (rows == 0) {
+            throw new RuntimeException("冻结用户失败");
+        }
+
+    }
+
+    @Override
+    public void unfreezeUser(Long userId) {
+        User user = userMapper.selectById(userId);
+
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
+        if (user.getStatus() == 1) {
+            throw new RuntimeException("用户当前未被冻结");
+        }
+
+        int rows = userMapper.updateStatus(userId, 1);
+
+        if (rows == 0) {
+            throw new RuntimeException("解冻用户失败");
+        }
     }
 }

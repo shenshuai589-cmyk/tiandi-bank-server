@@ -40,4 +40,36 @@
                             #{status}
                         )
     </insert>
+    <select id="selectById" resultType="com.kris.tiandi.bank.pojo.User">
+        SELECT
+            id,
+            username,
+            real_name AS realName,
+            phone,
+            role,
+            status,
+            create_time AS createTime
+        FROM  sys_user
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultType="com.kris.tiandi.bank.pojo.User">
+        select
+            id,
+            username,
+            real_name AS realName,
+            phone,
+            role,
+            status,
+            create_time AS createTime
+        FROM sys_user
+        ORDER BY id DESC
+    </select>
+
+
+    <update id="updateStatus">
+        update sys_user
+        set status = #{status}
+        WHERE id = #{id}
+    </update>
 </mapper>

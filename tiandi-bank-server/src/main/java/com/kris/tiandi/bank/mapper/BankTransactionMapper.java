@@ -14,4 +14,6 @@ public interface BankTransactionMapper {
      * 查询指定用户的交易记录
      */
     List<BankTransaction> selectByUserId(@Param("userId") Long userId);
+
+    List<BankTransaction> selectAll();
 }

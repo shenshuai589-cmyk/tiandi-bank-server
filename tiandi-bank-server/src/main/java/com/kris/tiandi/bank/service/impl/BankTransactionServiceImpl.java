@@ -25,4 +25,9 @@ public class BankTransactionServiceImpl implements BankTransactionService {
         return bankTransactionMapper.selectByUserId(userId);
     }
 
+    @Override
+    public List<BankTransaction> listAll() {
+        return bankTransactionMapper.selectAll();
+    }
+
 }

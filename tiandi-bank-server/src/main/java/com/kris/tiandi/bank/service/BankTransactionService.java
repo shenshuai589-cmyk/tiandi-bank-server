@@ -11,4 +11,7 @@ public interface BankTransactionService {
      * 查询指定用户的交易记录
      */
     List<BankTransaction> listByUserId(Long userId);
+
+
+    List<BankTransaction> listAll();
 }

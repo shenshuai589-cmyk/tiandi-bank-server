@@ -46,4 +46,19 @@
         WHERE user_id = #{userId}
           And balance >=  #{amount}
     </update>
+
+    <select id="selectAll"
+            resultType="com.kris.tiandi.bank.pojo.BankAccount">
+
+        SELECT
+            id,
+            user_id AS userId,
+            account_no AS accountNo,
+            balance,
+            status,
+            create_time AS createTime
+        FROM bank_account
+        ORDER BY id DESC
+
+    </select>
 </mapper>
