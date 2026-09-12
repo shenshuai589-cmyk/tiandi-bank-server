@@ -72,4 +72,10 @@
         set status = #{status}
         WHERE id = #{id}
     </update>
+
+    <update id="updatePassword">
+        update sys_user
+        set password = #{password}
+        where id = #{userId}
+    </update>
 </mapper>

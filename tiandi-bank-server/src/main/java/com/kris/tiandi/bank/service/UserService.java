@@ -1,5 +1,6 @@
 package com.kris.tiandi.bank.service;
 
+import com.kris.tiandi.bank.dto.ChangePasswordDTO;
 import com.kris.tiandi.bank.dto.LoginDTO;
 import com.kris.tiandi.bank.dto.RegisterDTO;
 import com.kris.tiandi.bank.pojo.User;
@@ -18,4 +19,6 @@ public interface UserService {
     void freezeUser(Long userId);
 
     void unfreezeUser(Long userId);
+
+    void changePassword(ChangePasswordDTO changePasswordDTO);
 }

@@ -18,4 +18,6 @@ public interface UserMapper {
     User selectById(Long id);
 
     int updateStatus(Long id,Integer status);
+
+    int updatePassword(Long id, String Password);
 }
