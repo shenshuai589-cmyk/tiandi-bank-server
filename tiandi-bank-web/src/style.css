@@ -1,0 +1,539 @@
+/* =======================================================================
+   天地银行 — 设计令牌 (Design Tokens)
+   概念：天 (Heaven) — 靛蓝夜色 + 天河金；地 (Earth) — 云锦白纸 + 墨色
+   贯穿神话意象：祥云、印玺（红色官印），而非具体角色形象
+======================================================================= */
+:root {
+  /* 天 · Heaven */
+  --ink-night: #0b1d33;
+  --ink-indigo: #142b4a;
+  --ink-indigo-2: #1c3a61;
+
+  /* 天河金 · Celestial gold */
+  --gold: #c9a44c;
+  --gold-soft: #e3c988;
+  --gold-dim: rgba(201, 164, 76, 0.35);
+
+  /* 地 · Earth */
+  --paper: #f6f1e4;
+  --paper-2: #fbf8f0;
+  --ink: #2a2620;
+  --ink-soft: #6b6357;
+  --line: #e4dcc8;
+
+  /* 印 · Seal / 松石 · Jade */
+  --seal-red: #8b2e2e;
+  --seal-red-soft: #b6493f;
+  --jade: #3f6e5b;
+
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 16px;
+  --shadow-card: 0 10px 30px rgba(11, 29, 51, 0.08);
+  --shadow-deep: 0 20px 60px rgba(11, 29, 51, 0.35);
+
+  --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-display: "Ma Shan Zheng", "Noto Serif SC", serif;
+  --font-num: "Noto Sans SC", "PingFang SC", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #app { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; }
+
+::selection { background: var(--gold-dim); }
+
+/* =======================================================================
+   祥云 · Drifting cloud field (ambient motion, used once per screen)
+======================================================================= */
+.cloud-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cloud-field svg {
+  position: absolute;
+  opacity: 0.16;
+}
+
+.cloud-field .c1 { top: 8%;  left: -10%; width: 340px; animation: cloudDrift 46s linear infinite; }
+.cloud-field .c2 { top: 42%; left: -20%; width: 260px; animation: cloudDrift 60s linear infinite; animation-delay: -18s; opacity: 0.1; }
+.cloud-field .c3 { top: 70%; left: -15%; width: 300px; animation: cloudDrift 52s linear infinite; animation-delay: -30s; }
+
+@keyframes cloudDrift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(140vw); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloud-field svg { animation: none !important; }
+}
+
+/* =======================================================================
+   印玺 · Seal stamp — brand mark + "confirmed" moment
+======================================================================= */
+.seal {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2px solid var(--seal-red);
+  color: var(--seal-red);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 22px;
+  flex-shrink: 0;
+  background: rgba(139, 46, 46, 0.05);
+}
+
+.seal.gold {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201, 164, 76, 0.08);
+}
+
+.seal-pop {
+  animation: stampIn 0.5s cubic-bezier(.2,1.4,.4,1);
+}
+
+@keyframes stampIn {
+  0%   { transform: scale(2.4) rotate(-14deg); opacity: 0; }
+  60%  { transform: scale(0.9) rotate(-4deg); opacity: 1; }
+  100% { transform: scale(1) rotate(-4deg); opacity: 1; }
+}
+
+/* =======================================================================
+   按钮
+======================================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 22px;
+  border-radius: var(--radius-s);
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  white-space: nowrap;
+}
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--ink-night), var(--ink-indigo-2));
+  color: var(--gold-soft);
+  border-color: var(--ink-night);
+}
+.btn-primary:hover:not(:disabled) { box-shadow: 0 10px 24px rgba(11, 29, 51, 0.28); }
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--ink);
+}
+.btn-outline:hover:not(:disabled) { border-color: var(--gold); color: var(--seal-red); }
+
+.btn-danger {
+  background: var(--paper-2);
+  border-color: var(--seal-red-soft);
+  color: var(--seal-red);
+}
+.btn-danger:hover:not(:disabled) { background: rgba(139, 46, 46, 0.08); }
+
+.btn-block { width: 100%; }
+.btn-sm { height: 36px; padding: 0 14px; font-size: 13px; }
+
+.text-btn {
+  border: 0;
+  background: none;
+  color: var(--ink-indigo-2);
+  font-weight: 600;
+  padding: 0;
+}
+.text-btn:hover { color: var(--seal-red); text-decoration: underline; }
+
+/* =======================================================================
+   登录 / 注册 — 天(左) / 地(右) 分屏
+======================================================================= */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  background: var(--paper);
+}
+
+.auth-brand {
+  position: relative;
+  width: 46%;
+  min-height: 100vh;
+  padding: 64px 60px;
+  background:
+    radial-gradient(600px 400px at 15% 0%, rgba(201,164,76,0.14), transparent 60%),
+    linear-gradient(160deg, var(--ink-night) 0%, var(--ink-indigo) 55%, var(--ink-indigo-2) 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.brand-top { position: relative; z-index: 1; }
+
+.brand-mark { display: flex; align-items: center; gap: 16px; margin-bottom: 56px; }
+.brand-mark .word { font-family: var(--font-display); font-size: 30px; letter-spacing: 2px; }
+.brand-mark small { display: block; color: #9fb0c7; font-size: 10px; letter-spacing: 4px; margin-top: 4px; }
+
+.brand-verse {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1.5;
+  color: var(--gold-soft);
+  margin: 0 0 14px;
+  writing-mode: horizontal-tb;
+}
+.brand-verse-sub { color: #b9c6da; font-size: 14px; letter-spacing: 3px; margin: 0; }
+
+.brand-ledger {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-top: 60px;
+}
+.brand-ledger-item { display: flex; align-items: flex-start; gap: 16px; }
+.brand-ledger-item .seal { width: 38px; height: 38px; font-size: 16px; }
+.brand-ledger-item h3 { margin: 2px 0 4px; font-size: 14px; font-weight: 600; color: #eef2f8; }
+.brand-ledger-item p { margin: 0; font-size: 12.5px; color: #94a5bd; line-height: 1.6; }
+
+.brand-foot { position: relative; z-index: 1; color: #6d7f99; font-size: 11px; letter-spacing: 1.5px; }
+
+.auth-card-wrap {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 40px 30px;
+}
+
+.auth-card { width: min(420px, 100%); }
+
+.eyebrow-seal { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+.eyebrow-seal .seal { width: 34px; height: 34px; font-size: 15px; }
+.eyebrow-seal span { font-size: 12.5px; color: var(--ink-soft); letter-spacing: 1px; }
+
+.auth-card h2 { font-size: 28px; margin: 0 0 6px; font-weight: 700; }
+.sub-title { color: var(--ink-soft); font-size: 13.5px; margin: 0 0 30px; }
+
+.auth-card label, .form-panel label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 16px 0 8px;
+}
+.auth-card label:first-of-type { margin-top: 0; }
+
+.auth-card input, .form-panel input, .form-panel select {
+  width: 100%;
+  height: 48px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  padding: 0 14px;
+  outline: none;
+  background: #fff;
+  font-size: 14px;
+}
+.auth-card input:focus, .form-panel input:focus, .form-panel select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-dim);
+}
+
+.field-row { display: flex; gap: 14px; }
+.field-row > div { flex: 1; }
+
+.switch-text { text-align: center; color: var(--ink-soft); font-size: 13px; margin: 26px 0 0; }
+.switch-text a, .switch-text .text-btn { color: var(--ink-indigo-2); font-weight: 700; }
+
+.error {
+  color: var(--seal-red);
+  font-size: 13px;
+  background: rgba(139, 46, 46, 0.06);
+  border: 1px solid rgba(139, 46, 46, 0.18);
+  border-radius: var(--radius-s);
+  padding: 10px 14px;
+  margin-top: 16px;
+}
+.success {
+  color: var(--jade);
+  font-size: 13px;
+  background: rgba(63, 110, 91, 0.08);
+  border: 1px solid rgba(63, 110, 91, 0.2);
+  border-radius: var(--radius-s);
+  padding: 10px 14px;
+  margin-top: 16px;
+}
+
+/* =======================================================================
+   Bank 主体布局 — 侧栏(天) + 主内容(地)
+======================================================================= */
+.bank-layout { min-height: 100vh; display: flex; background: var(--paper); }
+
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, var(--ink-night), var(--ink-indigo));
+  color: #fff;
+  padding: 26px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.side-logo { display: flex; align-items: center; gap: 12px; padding: 4px 10px 30px; }
+.side-logo .word { font-family: var(--font-display); font-size: 20px; letter-spacing: 1px; }
+.side-logo small { display: block; color: #93a5bd; font-size: 8.5px; letter-spacing: 2.5px; margin-top: 3px; }
+
+nav.side-nav { display: flex; flex-direction: column; gap: 6px; }
+nav.side-nav button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: 0;
+  color: #c6d2e2;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: var(--radius-s);
+  font-size: 14px;
+}
+nav.side-nav button .ico { width: 18px; text-align: center; color: var(--gold-soft); }
+nav.side-nav button.active { background: rgba(201, 164, 76, 0.16); color: #fff; }
+nav.side-nav button:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+
+.sidebar-bottom { display: flex; flex-direction: column; gap: 4px; }
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  background: transparent;
+  color: #93a5bd;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: var(--radius-s);
+  font-size: 13.5px;
+}
+.logout-btn:hover { color: var(--seal-red-soft); background: rgba(255,255,255,0.06); }
+
+.main-content { flex: 1; min-width: 0; padding: 0 42px 60px; }
+
+.topbar {
+  height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.topbar-title { font-size: 13px; color: var(--ink-soft); letter-spacing: 1px; }
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 7px 16px 7px 7px;
+  font-size: 13px;
+}
+.user-chip .avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--ink-night), var(--ink-indigo-2));
+  color: var(--gold-soft);
+  display: grid; place-items: center;
+  font-size: 13px; font-weight: 700;
+}
+
+/* Ledger-style welcome / balance ribbon */
+.welcome {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--ink-night), var(--ink-indigo-2));
+  color: #fff;
+  border-radius: var(--radius-l);
+  padding: 34px 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+.welcome-eyebrow { color: var(--gold-soft); font-size: 12.5px; letter-spacing: 2px; position: relative; z-index: 1; }
+.welcome h1 { margin: 8px 0 6px; font-size: 26px; font-weight: 700; position: relative; z-index: 1; }
+.welcome p { margin: 0; color: #b9c6da; font-size: 13px; position: relative; z-index: 1; }
+.welcome .outline-btn {
+  position: relative; z-index: 1;
+  border: 1px solid rgba(255,255,255,0.45);
+  background: transparent;
+  color: #fff;
+}
+.welcome .outline-btn:hover { border-color: var(--gold); color: var(--gold-soft); }
+
+.stat-card {
+  margin-top: 20px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 26px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-card);
+}
+.stat-card .label { display: flex; align-items: center; gap: 10px; color: var(--ink-soft); font-size: 13px; }
+.stat-card .amount {
+  font-family: var(--font-num);
+  font-variant-numeric: tabular-nums;
+  font-size: 40px;
+  font-weight: 700;
+  margin: 8px 0 4px;
+  border-bottom: 2px solid var(--gold-dim);
+  display: inline-block;
+  padding-bottom: 4px;
+}
+.stat-card small { color: var(--ink-soft); font-size: 12px; }
+.stat-card .account-no { font-family: var(--font-num); letter-spacing: 1.5px; color: var(--ink-soft); font-size: 13px; }
+
+.card-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; margin-top: 20px; }
+.card-grid.two { grid-template-columns: 1fr 1fr; }
+
+.panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 26px;
+  box-shadow: var(--shadow-card);
+}
+.panel h2, .panel h3 { margin: 0 0 4px; font-size: 17px; }
+.muted { color: var(--ink-soft); font-size: 13px; margin: 0 0 16px; }
+
+.info-row { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding: 14px 0; font-size: 13.5px; }
+.info-row:last-child { border-bottom: 0; }
+.info-row span:first-child { color: var(--ink-soft); }
+
+/* 交易记录行 — 存/取/转 类型标签 */
+.tx-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); gap: 14px; }
+.tx-row:last-child { border-bottom: 0; }
+.tx-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.tx-left > div { min-width: 0; }
+.tx-left strong { display: block; font-size: 13.5px; }
+.tx-row small { display: block; color: var(--ink-soft); margin-top: 3px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tx-amount { font-family: var(--font-num); font-variant-numeric: tabular-nums; font-weight: 700; font-size: 15px; white-space: nowrap; }
+.tx-amount.in { color: var(--jade); }
+.tx-amount.out { color: var(--seal-red); }
+
+.tx-badge {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 15px; flex-shrink: 0;
+}
+.tx-badge.deposit { background: rgba(63,110,91,0.1); color: var(--jade); }
+.tx-badge.withdraw { background: rgba(139,46,46,0.08); color: var(--seal-red); }
+.tx-badge.transfer-out { background: rgba(139,46,46,0.08); color: var(--seal-red-soft); }
+.tx-badge.transfer-in { background: rgba(63,110,91,0.1); color: var(--jade); }
+
+.empty { color: var(--ink-soft); text-align: center; padding: 40px 20px; font-size: 13.5px; }
+
+/* 表单面板 (存款/取款/转账/改密) */
+.form-panel { max-width: 480px; }
+.form-panel .primary-btn { max-width: 220px; }
+.amount-hint { font-size: 12px; color: var(--ink-soft); margin-top: 8px; }
+.notice { margin: 0 0 18px; padding: 12px 16px; border-radius: var(--radius-s); background: var(--paper-2); border: 1px solid var(--line); font-size: 13px; }
+
+/* 表格 (交易记录 / 后台管理) */
+.table-wrap { overflow: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; }
+th, td { text-align: left; padding: 13px 14px; border-bottom: 1px solid var(--line); }
+th { color: var(--ink-soft); font-weight: 600; font-size: 12.5px; }
+tbody tr:hover { background: var(--paper-2); }
+
+.status-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;
+}
+.status-pill.active { background: rgba(63,110,91,0.1); color: var(--jade); }
+.status-pill.frozen { background: rgba(139,46,46,0.08); color: var(--seal-red); }
+.status-pill.admin { background: rgba(201,164,76,0.16); color: #8a6a1f; }
+
+/* 后台管理 */
+.admin-page { position: relative; min-height: 100vh; background: var(--ink-night); padding: 0; }
+.admin-top {
+  background: linear-gradient(160deg, var(--ink-night), var(--ink-indigo));
+  color: #fff;
+  padding: 40px 50px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.admin-top .eyebrow-seal span { color: #9fb0c7; }
+.admin-top h1 { margin: 6px 0 0; font-size: 26px; }
+.admin-body { background: var(--paper); border-radius: 24px 24px 0 0; padding: 30px 50px 60px; min-height: 60vh; }
+
+.admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+.admin-tabs button {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink-soft);
+  padding: 11px 20px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.admin-tabs button.active { background: var(--ink-night); border-color: var(--ink-night); color: var(--gold-soft); }
+
+.table-panel { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-l); padding: 6px; box-shadow: var(--shadow-card); }
+.table-panel .table-wrap { padding: 14px; }
+
+/* =======================================================================
+   响应式
+======================================================================= */
+@media (max-width: 980px) {
+  .card-grid, .card-grid.two { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 860px) {
+  .auth-brand { display: none; }
+  .auth-card-wrap { padding: 24px 18px; }
+  .sidebar { width: 200px; }
+  .main-content { padding: 0 20px 40px; }
+  .admin-top, .admin-body { padding-left: 24px; padding-right: 24px; }
+}
+
+@media (max-width: 620px) {
+  .bank-layout { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: relative; flex-direction: row; align-items: center; padding: 14px 16px; }
+  .side-logo { padding: 0; }
+  nav.side-nav { flex-direction: row; overflow-x: auto; }
+  .sidebar-bottom { display: none; }
+  .welcome { flex-direction: column; align-items: flex-start; }
+  .field-row { flex-direction: column; }
+}
